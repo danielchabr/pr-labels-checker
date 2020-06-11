@@ -1,0 +1,29 @@
+{
+  "name": "pr-has-one-of-labels",
+  "version": "1.0.0",
+  "description": "Github Action to check if a PR has at least one of the provided labels",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielchabr/pr-has-one-of-labels.git"
+  },
+  "keywords": [
+    "actions",
+    "labels",
+    "check",
+    "status"
+  ],
+  "author": "Daniel Chabr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danielchabr/pr-has-one-of-labels/issues"
+  },
+  "homepage": "https://github.com/danielchabr/pr-has-one-of-labels#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^3.0.0"
+  }
+}

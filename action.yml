@@ -1,0 +1,15 @@
+name: 'Does PR have the label?'
+description: 'Checks whether the PR has at least one of the specified labels'
+inputs:
+  labels:
+    description: 'Comma separated list of labels'
+    required: true
+outputs:
+  has-label:
+    description: 'Has some label?'
+runs:
+  using: 'node12'
+  main: 'index.js'
+branding:
+  icon: 'tag'
+  color: 'blue'
