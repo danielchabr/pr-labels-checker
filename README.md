@@ -6,9 +6,10 @@ Example workflow file:
 name: QA Labels Check
 on:
   pull_request:
-    types: [opened, labeled, unlabeled]
+    types: [opened, edited, labeled, unlabeled, synchronize]
 jobs:
-  build:
+  QA-check:
+    if: github.base_ref == 'develop'
     runs-on: ubuntu-latest
     steps:
       - uses: danielchabr/pr-has-one-of-labels@master
