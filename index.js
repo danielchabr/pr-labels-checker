@@ -12,30 +12,22 @@ const hasNoneLabels = hasNoneInput.split(',')
 const hasNotAllLabels = hasNotAllInput.split(',')
 
 const failMessages = []
+const prLabels = github.context.payload.pull_request.labels.map(item => item.name)
 
-console.log(hasSomeInput)
-console.log(!hasSomeInput)
-console.log(
-  hasSomeLabels.some((item) =>
-    github.context.payload.pull_request.labels.includes(item.name)
-  )
-)
-console.log(hasSomeLabels)
-console.log(github.context.payload.pull_request.labels)
-const hasSomeResult = !hasSomeInput || hasSomeLabels.some((item) =>
-  github.context.payload.pull_request.labels.includes(item.name)
+const hasSomeResult = !hasSomeInput || hasSomeLabels.some((label) =>
+  prLabels.includes(label)
 )
 
-const hasAllResult = !hasAllInput || hasAllLabels.every((item) =>
-  github.context.payload.pull_request.labels.includes(item.name)
+const hasAllResult = !hasAllInput || hasAllLabels.every((label) =>
+  prLabels.includes(label)
 )
 
-const hasNoneResult = !hasNoneInput || hasNoneLabels.every((item) =>
-  !github.context.payload.pull_request.labels.includes(item.name)
+const hasNoneResult = !hasNoneInput || hasNoneLabels.every((label) =>
+  !prLabels.includes(label)
 )
 
-const hasNotAllResult = !hasNotAllInput || hasNotAllLabels.some((item) =>
-  !github.context.payload.pull_request.labels.includes(item.name)
+const hasNotAllResult = !hasNotAllInput || hasNotAllLabels.some((label) =>
+  !prLabels.includes(label)
 )
 
 if (!hasSomeResult) {
