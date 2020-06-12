@@ -1,5 +1,5 @@
-# pr-has-one-of-labels
-Github Action to check if a PR has at least one of the provided labels
+# pr-labels-check
+Github Action to check if a PR's labels pass the specified rules
 
 Example workflow file:
 ```yml
@@ -15,5 +15,5 @@ jobs:
       - uses: danielchabr/pr-has-one-of-labels@master
         id: checkLabel
         with:
-          labels: QA:tested,QA:skipped
+          hasSome: QA:tested,QA:skipped
 ```
