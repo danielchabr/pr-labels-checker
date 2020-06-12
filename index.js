@@ -20,6 +20,8 @@ console.log(
     github.context.payload.pull_request.labels.includes(item.name)
   )
 )
+console.log(hasSomeLabels)
+console.log(github.context.payload.pull_request.labels)
 const hasSomeResult = !hasSomeInput || hasSomeLabels.some((item) =>
   github.context.payload.pull_request.labels.includes(item.name)
 )
