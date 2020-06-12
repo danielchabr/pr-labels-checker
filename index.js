@@ -1,24 +1,60 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 
-const labelsInput = core.getInput('labels')
+const hasSomeInput = core.getInput('hasSome')
+const hasAllInput = core.getInput('hasAll')
+const hasNoneInput = core.getInput('hasNone')
+const hasNotAllInput = core.getInput('hasNotAll')
 
-const labels = labelsInput.split(',')
+const hasSomeLabels = hasSomeInput.split(',')
+const hasAllLabels = hasAllInput.split(',')
+const hasNoneLabels = hasNoneInput.split(',')
+const hasNotAllLabels = hasNotAllInput.split(',')
 
-const hasLabel = github.context.payload.pull_request.labels.some((item) =>
-  labels.includes(item.name)
+const failMessages = []
+
+const hasSomeResult = !hasSomeInput || hasSomeLabels.some((item) =>
+  github.context.payload.pull_request.labels.includes(item.name)
 )
 
-if (!hasLabel) {
-  core.setFailed(
-    `The PR needs to have one of the following labels to pass this check: ${labels.join(
-      ', '
-    )}`
-  )
+const hasAllResult = !hasAllInput || hasAllLabels.every((item) =>
+  github.context.payload.pull_request.labels.includes(item.name)
+)
+
+const hasNoneResult = !hasNoneInput || hasNoneLabels.every((item) =>
+  !github.context.payload.pull_request.labels.includes(item.name)
+)
+
+const hasNotAllResult = !hasNotAllInput || hasNotAllLabels.some((item) =>
+  !github.context.payload.pull_request.labels.includes(item.name)
+)
+
+if (!hasSomeResult) {
+  failMessages.push(`The PR needs to have at least one of the following labels to pass this check: ${hasSomeLabels.join(
+    ', '
+  )}`)
 }
 
-core.setOutput('hasLabel', hasLabel)
+if (!hasAllResult) {
+  failMessages.push(`The PR needs to have all of the following labels to pass this check: ${hasAllLabels.join(
+    ', '
+  )}`)
+}
 
-console.log(
-  `Does PR have one of '${labels.join(', ')}' labels?: ${hasLabel}`
-)
+if (!hasNoneResult) {
+  failMessages.push(`The PR needs to have none of the following labels to pass this check: ${hasNoneLabels.join(
+    ', '
+  )}`)
+}
+
+if (!hasNotAllResult) {
+  failMessages.push(`The PR needs to not have at least one of the following labels to pass this check: ${hasNotAllLabels.join(
+    ', '
+  )}`)
+}
+
+if (failMessages.length) {
+  core.setFailed(failMessages.join('. '))
+}
+
+core.setOutput('passed', failMessages.length === 0)
