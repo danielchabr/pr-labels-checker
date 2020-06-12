@@ -1,19 +1,36 @@
-# pr-has-one-of-labels
-Github Action to check if a PR has at least one of the provided labels
+# PR Labels Checker
+Github Action to check if a PR's labels pass the specified rules
 
-Example workflow file:
+## Input
+- `hasSome`: Comma separated list of labels, PR needs at least of them
+- `hasAll`: Comma separated list of labels, PR needs all of them
+- `hasNone`: Comma separated list of labels, PR must not have any of them
+- `hasNotAll`: Comma separated list of labels, PR must not have all of them
+
+## Output
+- `passed`: boolean
+
+## Example workflow file
 ```yml
-name: QA Labels Check
+name: Labels Check
 on:
   pull_request:
     types: [opened, edited, labeled, unlabeled, synchronize]
 jobs:
   QA-check:
-    if: github.base_ref == 'develop'
+    if: github.base_ref == 'master'
     runs-on: ubuntu-latest
     steps:
       - uses: danielchabr/pr-has-one-of-labels@master
         id: checkLabel
         with:
-          labels: QA:tested,QA:skipped
+          hasSome: QA:tested,QA:skipped
+  Do_not_merge-check:
+    if: github.base_ref == 'master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: danielchabr/pr-has-one-of-labels@master
+        id: checkLabel
+        with:
+          hasNone: do not merge,blocked
 ```

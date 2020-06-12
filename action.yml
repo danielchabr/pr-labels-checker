@@ -1,12 +1,21 @@
-name: 'Does PR have the label?'
-description: 'Checks whether the PR has at least one of the specified labels'
+name: 'PR labels checker'
+description: 'Checks PR labels for specified rules'
 inputs:
-  labels:
-    description: 'Comma separated list of labels'
-    required: true
+  hasSome:
+    description: 'Comma separated list of labels, PR needs at least of them'
+    required: false
+  hasAll:
+    description: 'Comma separated list of labels, PR needs all of them'
+    required: false
+  hasNone:
+    description: 'Comma separated list of labels, PR must not have any of them'
+    required: false
+  hasNotAll:
+    description: 'Comma separated list of labels, PR must not have all of them'
+    required: false
 outputs:
-  has-label:
-    description: 'Has some label?'
+  passed:
+    description: 'Have the provided labels passed all tests?'
 runs:
   using: 'node12'
   main: 'index.js'
