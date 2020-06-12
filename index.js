@@ -13,6 +13,13 @@ const hasNotAllLabels = hasNotAllInput.split(',')
 
 const failMessages = []
 
+console.log(hasSomeInput)
+console.log(!hasSomeInput)
+console.log(
+  hasSomeLabels.some((item) =>
+    github.context.payload.pull_request.labels.includes(item.name)
+  )
+)
 const hasSomeResult = !hasSomeInput || hasSomeLabels.some((item) =>
   github.context.payload.pull_request.labels.includes(item.name)
 )
