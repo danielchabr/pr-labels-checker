@@ -1,7 +1,7 @@
 {
-  "name": "pr-has-one-of-labels",
-  "version": "1.0.0",
-  "description": "Github Action to check if a PR has at least one of the provided labels",
+  "name": "pr-labels-checker",
+  "version": "2.0.0",
+  "description": "Github Action to check if a PR's labels pass the specified rules",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
