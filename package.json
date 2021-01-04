@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/danielchabr/pr-has-one-of-labels#readme",
   "dependencies": {
-    "@actions/core": "^1.2.4",
-    "@actions/github": "^3.0.0"
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0"
   }
 }
