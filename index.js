@@ -1,6 +1,11 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 
+// check if this is running on a pull request
+if (!github.context.payload.pull_request) {
+  return core.setOutput('passed', true)
+}
+
 const hasSomeInput = core.getInput('hasSome')
 const hasAllInput = core.getInput('hasAll')
 const hasNoneInput = core.getInput('hasNone')
@@ -12,6 +17,8 @@ const hasNoneLabels = hasNoneInput.split(',')
 const hasNotAllLabels = hasNotAllInput.split(',')
 
 const failMessages = []
+
+
 const prLabels = github.context.payload.pull_request.labels.map(item => item.name)
 
 const hasSomeResult = !hasSomeInput || hasSomeLabels.some((label) =>
