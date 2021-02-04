@@ -89,7 +89,8 @@ octokit.checks.create({
   status: 'completed',
   conclusion: 'success',
   output: {
-    title: 'passed'
+    title: 'passed',
+    summary: 'this passed'
   }
 })
 
