@@ -61,15 +61,20 @@ if (!hasNotAllResult) {
   )}`)
 }
 
-if (failMessages.length) {
-  const githubToken = core.getInput('github-token');
-  const context = github.context
+const token = core.getInput('githubToken');
+const context = github.context
 
-  const octokit = github.getOctokit(githubToken)
-  octokit.checks.create({
+const octokit = github.getOctokit(githubToken)
+const params = {
     ...context.repo,
+    token,
     head_sha: context.sha,
     name: `Action: ${context.action} Job: ${context.job} Workflow: ${context.workflow}`,
+}
+
+if (failMessages.length) {
+  octokit.checks.create({
+    ...params,
     status: 'completed',
     conclusion: 'failure',
     output: {
@@ -80,19 +85,13 @@ if (failMessages.length) {
   // core.setFailed(failMessages.join('. '))
 }
 
-  const githubToken = core.getInput('github-token');
-  const context = github.context
-
-  const octokit = github.getOctokit(githubToken)
-  octokit.checks.create({
-    ...context.repo,
-    head_sha: context.sha,
-    name: `Action: ${context.action} Job: ${context.job} Workflow: ${context.workflow}`,
-    status: 'completed',
-    conclusion: 'success',
-    output: {
-      title: 'passed'
-    }
-  })
+octokit.checks.create({
+  ...params,
+  status: 'completed',
+  conclusion: 'success',
+  output: {
+    title: 'passed'
+  }
+})
 
 core.setOutput('passed', failMessages.length === 0)
