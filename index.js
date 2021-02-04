@@ -71,6 +71,20 @@ const params = {
     name: `Action: ${context.action} Job: ${context.job} Workflow: ${context.workflow}`,
 }
 console.log(context)
+console.log(params)
+
+async function getHeadSha() {
+  const pr = await this._octokit.pulls.get(
+    {
+      ...context.repo,
+      pull_number: context.payload.pull_request.number || 0
+    }
+  )
+
+  return pr.data.head.sha
+}
+
+console.log(getHeadSha)
 
 async function run () {
   if (failMessages.length) {
