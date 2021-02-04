@@ -84,7 +84,7 @@ async function getHeadSha() {
   return pr.data.head.sha
 }
 
-console.log(getHeadSha)
+console.log(await getHeadSha())
 
 async function run () {
   if (failMessages.length) {
