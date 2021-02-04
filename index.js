@@ -72,27 +72,31 @@ const params = {
 }
 console.log(context)
 
-if (failMessages.length) {
+async function run () {
+  if (failMessages.length) {
+    await octokit.checks.create({
+      ...params,
+      status: 'completed',
+      conclusion: 'failure',
+      output: {
+        title: 'failed',
+        summary: failMessages.join('. ')
+      }
+    })
+    // core.setFailed(failMessages.join('. '))
+  }
+
   await octokit.checks.create({
     ...params,
     status: 'completed',
-    conclusion: 'failure',
+    conclusion: 'success',
     output: {
-      title: 'failed',
-      summary: failMessages.join('. ')
+      title: 'passed',
+      summary: 'this passed'
     }
   })
-  // core.setFailed(failMessages.join('. '))
+
+  core.setOutput('passed', failMessages.length === 0)
 }
 
-await octokit.checks.create({
-  ...params,
-  status: 'completed',
-  conclusion: 'success',
-  output: {
-    title: 'passed',
-    summary: 'this passed'
-  }
-})
-
-core.setOutput('passed', failMessages.length === 0)
+run()
