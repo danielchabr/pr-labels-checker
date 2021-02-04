@@ -21,7 +21,7 @@ jobs:
     if: github.base_ref == 'master'
     runs-on: ubuntu-latest
     steps:
-      - uses: danielchabr/pr-has-one-of-labels@master
+      - uses: danielchabr/pr-labels-checker@v2.2
         id: checkLabel
         with:
           hasSome: QA:tested,QA:skipped
@@ -29,7 +29,7 @@ jobs:
     if: github.base_ref == 'master'
     runs-on: ubuntu-latest
     steps:
-      - uses: danielchabr/pr-has-one-of-labels@master
+      - uses: danielchabr/pr-labels-checker@v2.2
         id: checkLabel
         with:
           hasNone: do not merge,blocked

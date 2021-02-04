@@ -62,7 +62,37 @@ if (!hasNotAllResult) {
 }
 
 if (failMessages.length) {
-  core.setFailed(failMessages.join('. '))
+  const githubToken = core.getInput('github-token');
+  const context = github.context
+
+  const octokit = github.getOctokit(githubToken)
+  octokit.checks.create({
+    ...context.repo,
+    head_sha: context.sha,
+    name: `Action: ${context.action} Job: ${context.job} Workflow: ${context.workflow}`,
+    status: 'completed',
+    conclusion: 'failure',
+    output: {
+      title: 'failed',
+      summary: failMessages.join('. ')
+    }
+  })
+  // core.setFailed(failMessages.join('. '))
 }
+
+  const githubToken = core.getInput('github-token');
+  const context = github.context
+
+  const octokit = github.getOctokit(githubToken)
+  octokit.checks.create({
+    ...context.repo,
+    head_sha: context.sha,
+    name: `Action: ${context.action} Job: ${context.job} Workflow: ${context.workflow}`,
+    status: 'completed',
+    conclusion: 'success',
+    output: {
+      title: 'passed'
+    }
+  })
 
 core.setOutput('passed', failMessages.length === 0)
