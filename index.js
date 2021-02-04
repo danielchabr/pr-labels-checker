@@ -84,9 +84,10 @@ async function getHeadSha() {
   return pr.data.head.sha
 }
 
-console.log(await getHeadSha())
 
 async function run () {
+console.log(await getHeadSha())
+
   if (failMessages.length) {
     const check = await octokit.checks.create({
       ...params,
