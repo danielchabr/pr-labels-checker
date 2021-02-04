@@ -65,13 +65,7 @@ const token = core.getInput('githubToken');
 const context = github.context
 
 const octokit = github.getOctokit(token)
-const params = {
-    ...context.repo,
-    head_sha: context.sha,
-    name: `Action: ${context.action} Job: ${context.job} Workflow: ${context.workflow}`,
-}
 console.log(context)
-console.log(params)
 
 async function getHeadSha() {
   const pr = await this._octokit.pulls.get(
@@ -86,7 +80,13 @@ async function getHeadSha() {
 
 
 async function run () {
-console.log(await getHeadSha())
+  const params = {
+      ...context.repo,
+      head_sha: await getHeadSha(),
+      name: `Action: ${context.action} Job: ${context.job} Workflow: ${context.workflow}`,
+  }
+  console.log(params)
+  console.log(await getHeadSha())
 
   if (failMessages.length) {
     const check = await octokit.checks.create({
