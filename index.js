@@ -70,9 +70,10 @@ const params = {
     head_sha: context.sha,
     name: `Action: ${context.action} Job: ${context.job} Workflow: ${context.workflow}`,
 }
+console.log(context)
 
 if (failMessages.length) {
-  octokit.checks.create({
+  await octokit.checks.create({
     ...params,
     status: 'completed',
     conclusion: 'failure',
@@ -84,7 +85,7 @@ if (failMessages.length) {
   // core.setFailed(failMessages.join('. '))
 }
 
-octokit.checks.create({
+await octokit.checks.create({
   ...params,
   status: 'completed',
   conclusion: 'success',
