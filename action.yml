@@ -13,6 +13,9 @@ inputs:
   hasNotAll:
     description: 'Comma separated list of labels, PR must not have all of them'
     required: false
+  githubToken:
+    description: 'The Github secret token to access PR check API'
+    required: true
 outputs:
   passed:
     description: 'Have the provided labels passed all tests?'
