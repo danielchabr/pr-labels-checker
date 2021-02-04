@@ -64,10 +64,9 @@ if (!hasNotAllResult) {
 const token = core.getInput('githubToken');
 const context = github.context
 
-const octokit = github.getOctokit(githubToken)
+const octokit = github.getOctokit(token)
 const params = {
     ...context.repo,
-    token,
     head_sha: context.sha,
     name: `Action: ${context.action} Job: ${context.job} Workflow: ${context.workflow}`,
 }
