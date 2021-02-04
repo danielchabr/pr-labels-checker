@@ -68,7 +68,7 @@ const octokit = github.getOctokit(token)
 console.log(context)
 
 async function getHeadSha() {
-  const pr = await this._octokit.pulls.get(
+  const pr = await octokit.pulls.get(
     {
       ...context.repo,
       pull_number: context.payload.pull_request.number || 0
