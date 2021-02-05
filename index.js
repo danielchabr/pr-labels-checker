@@ -68,9 +68,11 @@ if (!hasNotAllResult) {
 async function run () {
   const params = {
     ...context.repo,
+    head_branch: context.payload.pull_request.head.ref,
     head_sha: context.payload.pull_request.head.sha,
     name: `${context.job} result`,
-    started_at: new Date().toISOString()
+    started_at: new Date().toISOString(),
+    completed_at: new Date().toISOString(),
   }
 
   // console.log(context.payload.pull_request.merge_commit_sha)
