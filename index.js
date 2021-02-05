@@ -65,30 +65,17 @@ if (!hasNotAllResult) {
   )}`)
 }
 
-async function getHeadSha() {
-  const pr = await octokit.pulls.get(
-    {
-      ...context.repo,
-      pull_number: context.payload.pull_request.number || 0
-    }
-  )
-
-  return pr.data.head.sha
-}
-
-
 async function run () {
   const params = {
-      ...context.repo,
-      head_sha: await getHeadSha(),
-      name: `${context.job} result`,
+    ...context.repo,
+    head_sha: context.payload.pull_request.head.sha,
+    name: `${context.job} result`,
+    started_at: new Date().toISOString()
   }
-  // console.log(params)
-  console.log(await getHeadSha())
-  console.log(context.payload.pull_request.head.sha)
-  console.log(context.payload.pull_request.merge_commit_sha)
 
+  // console.log(context.payload.pull_request.merge_commit_sha)
   console.log(failMessages)
+
   if (failMessages.length) {
     console.log(failMessages)
     const check = await octokit.checks.create({
