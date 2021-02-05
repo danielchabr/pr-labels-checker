@@ -76,12 +76,27 @@ async function run () {
   }
 
   // console.log(context.payload.pull_request.merge_commit_sha)
-  console.log(failMessages)
+  // console.log(failMessages)
+
+  const checks = await octokit.checks.listForRef({
+    ...context.repo,
+    ref: context.payload.pull_request.head.ref,
+  });
+
+  console.log(checks)
+
+  const checksSha = await octokit.checks.listForRef({
+    ...context.repo,
+    ref: context.payload.pull_request.head.sha,
+  });
+
+  console.log(checksSha)
 
   if (failMessages.length) {
     console.log(failMessages)
     const check = await octokit.checks.create({
       ...params,
+      external_id: context.job,
       status: 'completed',
       conclusion: 'failure',
       output: {
