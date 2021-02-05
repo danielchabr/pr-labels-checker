@@ -6,6 +6,10 @@ if (!github.context.payload.pull_request) {
   return core.setOutput('passed', true)
 }
 
+const token = core.getInput('githubToken');
+const context = github.context
+const octokit = github.getOctokit(token)
+
 const hasSomeInput = core.getInput('hasSome')
 const hasAllInput = core.getInput('hasAll')
 const hasNoneInput = core.getInput('hasNone')
@@ -61,12 +65,6 @@ if (!hasNotAllResult) {
   )}`)
 }
 
-const token = core.getInput('githubToken');
-const context = github.context
-
-const octokit = github.getOctokit(token)
-console.log(context)
-
 async function getHeadSha() {
   const pr = await octokit.pulls.get(
     {
@@ -88,7 +86,9 @@ async function run () {
   // console.log(params)
   // console.log(await getHeadSha())
 
+  console.log(failMessages)
   if (failMessages.length) {
+    console.log(failMessages)
     const check = await octokit.checks.create({
       ...params,
       status: 'completed',
@@ -101,8 +101,7 @@ async function run () {
 
     core.info(JSON.stringify(check))
 
-    // core.setFailed(failMessages.join('. '))
-    core.setOutput('passed', true)
+    core.info(failMessages.join('. '))
   } else {
     const check = await octokit.checks.create({
       ...params,
@@ -115,9 +114,10 @@ async function run () {
     })
 
     core.info(JSON.stringify(check))
-
-    core.setOutput('passed', failMessages.length === 0)
+    core.info('passed: true')
   }
+
+  core.setOutput('passed', true)
 }
 
 run()
