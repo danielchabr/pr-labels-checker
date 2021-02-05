@@ -83,14 +83,14 @@ async function run () {
     ref: context.payload.pull_request.head.ref,
   });
 
-  console.log(checks)
+  console.log(JSON.stringify(checks.data.check_runs))
 
   const checksSha = await octokit.checks.listForRef({
     ...context.repo,
     ref: context.payload.pull_request.head.sha,
   });
 
-  console.log(checksSha)
+  console.log(JSON.stringify(checksSha.data.check_runs))
 
   if (failMessages.length) {
     console.log(failMessages)
