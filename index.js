@@ -84,8 +84,10 @@ async function run () {
       name: `Action: ${context.action} Job: ${context.job} Workflow: ${context.workflow}`,
   }
   // console.log(params)
-  // console.log(await getHeadSha())
+  console.log(await getHeadSha())
 
+  console.log(github.sha)
+  console.log(context)
   console.log(failMessages)
   if (failMessages.length) {
     console.log(failMessages)
