@@ -85,42 +85,69 @@ async function run () {
 
   console.log(JSON.stringify(checks.data.check_runs))
 
-  const checksSha = await octokit.checks.listForRef({
-    ...context.repo,
-    ref: context.payload.pull_request.head.sha,
-  });
+  const checkRunIds = checks.data.check_runs.filter(check => check.name === context.job).map(check => check.id)
+  console.log(checkRunIds)
 
-  console.log(JSON.stringify(checksSha.data.check_runs))
+  // const checksSha = await octokit.checks.listForRef({
+  //   ...context.repo,
+  //   ref: context.payload.pull_request.head.sha,
+  // });
+
+  // console.log(JSON.stringify(checksSha.data.check_runs))
 
   if (failMessages.length) {
     console.log(failMessages)
-    const check = await octokit.checks.create({
-      ...params,
-      external_id: context.job,
-      status: 'completed',
-      conclusion: 'failure',
-      output: {
-        title: 'Labels did not pass provided rules',
-        summary: failMessages.join('. ')
-      }
-    })
+    // const check = await octokit.checks.create({
+    //   ...params,
+    //   external_id: context.job,
+    //   status: 'completed',
+    //   conclusion: 'failure',
+    //   output: {
+    //     title: 'Labels did not pass provided rules',
+    //     summary: failMessages.join('. ')
+    //   }
+    // })
 
-    core.info(JSON.stringify(check))
+    for (const id of checkRunIds) {
+      await octokit.checks.update({
+        ...context.repo,
+        check_run_id: id,
+        conclusion: 'failure',
+        output: {
+          title: 'Labels did not pass provided rules',
+          summary: failMessages.join('. ')
+        }
+      })
+    }
+
+    // core.info(JSON.stringify(check))
 
     core.info(failMessages.join('. '))
     core.setFailed(failMessages.join('. '))
   } else {
-    const check = await octokit.checks.create({
-      ...params,
-      status: 'completed',
-      conclusion: 'success',
-      output: {
-        title: 'Labels follow all the provided rules',
-        summary: ''
-      }
-    })
+    // const check = await octokit.checks.create({
+    //   ...params,
+    //   status: 'completed',
+    //   conclusion: 'success',
+    //   output: {
+    //     title: 'Labels follow all the provided rules',
+    //     summary: ''
+    //   }
+    // })
 
-    core.info(JSON.stringify(check))
+    for (const id of checkRunIds) {
+      await octokit.checks.update({
+        ...context.repo,
+        check_run_id: id,
+        conclusion: 'success',
+        output: {
+          title: 'Labels follow all the provided rules',
+          summary: ''
+        }
+      })
+    }
+
+    // core.info(JSON.stringify(check))
     core.info('passed: true')
 
     core.setOutput('passed', true)
