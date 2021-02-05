@@ -6,6 +6,7 @@ Github Action to check if a PR's labels pass the specified rules
 - `hasAll`: Comma separated list of labels, PR needs all of them
 - `hasNone`: Comma separated list of labels, PR must not have any of them
 - `hasNotAll`: Comma separated list of labels, PR must not have all of them
+- `githubToken`: GitHub token
 
 ## Output
 - `passed`: boolean
@@ -15,22 +16,24 @@ Github Action to check if a PR's labels pass the specified rules
 name: Labels Check
 on:
   pull_request:
-    types: [opened, edited, labeled, unlabeled, synchronize]
+    types: [opened, labeled, unlabeled, synchronize]
 jobs:
   QA-check:
     if: github.base_ref == 'master'
     runs-on: ubuntu-latest
     steps:
-      - uses: danielchabr/pr-labels-checker@v2.2
+      - uses: danielchabr/pr-labels-checker@v3
         id: checkLabel
         with:
           hasSome: QA:tested,QA:skipped
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
   Do_not_merge-check:
     if: github.base_ref == 'master'
     runs-on: ubuntu-latest
     steps:
-      - uses: danielchabr/pr-labels-checker@v2.2
+      - uses: danielchabr/pr-labels-checker@v3
         id: checkLabel
         with:
           hasNone: do not merge,blocked
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
 ```
