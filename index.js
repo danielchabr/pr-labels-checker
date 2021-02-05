@@ -85,9 +85,8 @@ async function run () {
   }
   // console.log(params)
   console.log(await getHeadSha())
+  console.log(context.pull_request.head.sha)
 
-  console.log(github.sha)
-  console.log(context)
   console.log(failMessages)
   if (failMessages.length) {
     console.log(failMessages)
