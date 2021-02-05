@@ -70,7 +70,7 @@ async function run () {
     ...context.repo,
     head_branch: context.payload.pull_request.head.ref,
     head_sha: context.payload.pull_request.head.sha,
-    name: `${context.job} result`,
+    name: `${context.job}`,
     started_at: new Date().toISOString(),
     completed_at: new Date().toISOString(),
   }
@@ -108,7 +108,7 @@ async function run () {
     core.info('passed: true')
   }
 
-  core.setOutput('passed', true)
+  // core.setOutput('passed', true)
 }
 
 run()
