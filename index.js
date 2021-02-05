@@ -66,48 +66,15 @@ if (!hasNotAllResult) {
 }
 
 async function run () {
-  const params = {
-    ...context.repo,
-    head_branch: context.payload.pull_request.head.ref,
-    head_sha: context.payload.pull_request.head.sha,
-    name: `${context.job}`,
-    started_at: new Date().toISOString(),
-    completed_at: new Date().toISOString(),
-  }
-
-  // console.log(context.payload.pull_request.merge_commit_sha)
-  // console.log(failMessages)
-
   const checks = await octokit.checks.listForRef({
     ...context.repo,
     ref: context.payload.pull_request.head.ref,
   });
 
-  console.log(JSON.stringify(checks.data.check_runs))
-
   const checkRunIds = checks.data.check_runs.filter(check => check.name === context.job).map(check => check.id)
-  console.log(checkRunIds)
-
-  // const checksSha = await octokit.checks.listForRef({
-  //   ...context.repo,
-  //   ref: context.payload.pull_request.head.sha,
-  // });
-
-  // console.log(JSON.stringify(checksSha.data.check_runs))
 
   if (failMessages.length) {
-    console.log(failMessages)
-    // const check = await octokit.checks.create({
-    //   ...params,
-    //   external_id: context.job,
-    //   status: 'completed',
-    //   conclusion: 'failure',
-    //   output: {
-    //     title: 'Labels did not pass provided rules',
-    //     summary: failMessages.join('. ')
-    //   }
-    // })
-
+    // update old checks
     for (const id of checkRunIds) {
       await octokit.checks.update({
         ...context.repo,
@@ -120,21 +87,9 @@ async function run () {
       })
     }
 
-    // core.info(JSON.stringify(check))
-
-    core.info(failMessages.join('. '))
     core.setFailed(failMessages.join('. '))
   } else {
-    // const check = await octokit.checks.create({
-    //   ...params,
-    //   status: 'completed',
-    //   conclusion: 'success',
-    //   output: {
-    //     title: 'Labels follow all the provided rules',
-    //     summary: ''
-    //   }
-    // })
-
+    // update old checks
     for (const id of checkRunIds) {
       await octokit.checks.update({
         ...context.repo,
@@ -146,9 +101,6 @@ async function run () {
         }
       })
     }
-
-    // core.info(JSON.stringify(check))
-    core.info('passed: true')
 
     core.setOutput('passed', true)
   }
