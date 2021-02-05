@@ -81,7 +81,7 @@ async function run () {
   const params = {
       ...context.repo,
       head_sha: await getHeadSha(),
-      name: `Action: ${context.action} Job: ${context.job} Workflow: ${context.workflow}`,
+      name: `${context.job} result`,
   }
   // console.log(params)
   console.log(await getHeadSha())
@@ -96,7 +96,7 @@ async function run () {
       status: 'completed',
       conclusion: 'failure',
       output: {
-        title: 'failed',
+        title: 'Labels did not pass provided rules',
         summary: failMessages.join('. ')
       }
     })
@@ -110,8 +110,8 @@ async function run () {
       status: 'completed',
       conclusion: 'success',
       output: {
-        title: 'passed',
-        summary: 'this passed'
+        title: 'Labels follow all the provided rules',
+        summary: ''
       }
     })
 
