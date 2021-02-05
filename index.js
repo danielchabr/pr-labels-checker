@@ -23,7 +23,7 @@ const hasNotAllLabels = hasNotAllInput.split(',')
 const failMessages = []
 
 
-const prLabels = github.context.payload.pull_request.labels.map(item => item.name)
+const prLabels = context.payload.pull_request.labels.map(item => item.name)
 
 const hasSomeResult = !hasSomeInput || hasSomeLabels.some((label) =>
   prLabels.includes(label)
@@ -85,8 +85,8 @@ async function run () {
   }
   // console.log(params)
   console.log(await getHeadSha())
-  console.log(context.pull_request.payload.head.sha)
-  console.log(context.pull_request.payload.merge_commit_sha)
+  console.log(context.payload.pull_request.head.sha)
+  console.log(context.payload.pull_request.merge_commit_sha)
 
   console.log(failMessages)
   if (failMessages.length) {
