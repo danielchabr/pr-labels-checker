@@ -86,6 +86,7 @@ async function run () {
   // console.log(params)
   console.log(await getHeadSha())
   console.log(context.pull_request.head.sha)
+  console.log(context.pull_request.merge_commit_sha)
 
   console.log(failMessages)
   if (failMessages.length) {
