@@ -6,6 +6,10 @@ if (!github.context.payload.pull_request) {
   return core.setOutput('passed', true)
 }
 
+const token = core.getInput('githubToken');
+const context = github.context
+const octokit = github.getOctokit(token)
+
 const hasSomeInput = core.getInput('hasSome')
 const hasAllInput = core.getInput('hasAll')
 const hasNoneInput = core.getInput('hasNone')
@@ -19,7 +23,7 @@ const hasNotAllLabels = hasNotAllInput.split(',')
 const failMessages = []
 
 
-const prLabels = github.context.payload.pull_request.labels.map(item => item.name)
+const prLabels = context.payload.pull_request.labels.map(item => item.name)
 
 const hasSomeResult = !hasSomeInput || hasSomeLabels.some((label) =>
   prLabels.includes(label)
@@ -61,8 +65,45 @@ if (!hasNotAllResult) {
   )}`)
 }
 
-if (failMessages.length) {
-  core.setFailed(failMessages.join('. '))
+async function run () {
+  const checks = await octokit.checks.listForRef({
+    ...context.repo,
+    ref: context.payload.pull_request.head.ref,
+  });
+
+  const checkRunIds = checks.data.check_runs.filter(check => check.name === context.job).map(check => check.id)
+
+  if (failMessages.length) {
+    // update old checks
+    for (const id of checkRunIds) {
+      await octokit.checks.update({
+        ...context.repo,
+        check_run_id: id,
+        conclusion: 'failure',
+        output: {
+          title: 'Labels did not pass provided rules',
+          summary: failMessages.join('. ')
+        }
+      })
+    }
+
+    core.setFailed(failMessages.join('. '))
+  } else {
+    // update old checks
+    for (const id of checkRunIds) {
+      await octokit.checks.update({
+        ...context.repo,
+        check_run_id: id,
+        conclusion: 'success',
+        output: {
+          title: 'Labels follow all the provided rules',
+          summary: ''
+        }
+      })
+    }
+
+    core.setOutput('passed', true)
+  }
 }
 
-core.setOutput('passed', failMessages.length === 0)
+run()
