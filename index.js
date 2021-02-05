@@ -85,8 +85,8 @@ async function run () {
       head_sha: await getHeadSha(),
       name: `Action: ${context.action} Job: ${context.job} Workflow: ${context.workflow}`,
   }
-  console.log(params)
-  console.log(await getHeadSha())
+  // console.log(params)
+  // console.log(await getHeadSha())
 
   if (failMessages.length) {
     const check = await octokit.checks.create({
@@ -99,25 +99,25 @@ async function run () {
       }
     })
 
-  core.info(JSON.stringify(check))
+    core.info(JSON.stringify(check))
 
     // core.setFailed(failMessages.join('. '))
-  core.setOutput('passed', true)
+    core.setOutput('passed', true)
+  } else {
+    const check = await octokit.checks.create({
+      ...params,
+      status: 'completed',
+      conclusion: 'success',
+      output: {
+        title: 'passed',
+        summary: 'this passed'
+      }
+    })
+
+    core.info(JSON.stringify(check))
+
+    core.setOutput('passed', failMessages.length === 0)
   }
-
-  const check = await octokit.checks.create({
-    ...params,
-    status: 'completed',
-    conclusion: 'success',
-    output: {
-      title: 'passed',
-      summary: 'this passed'
-    }
-  })
-
-  core.info(JSON.stringify(check))
-
-  core.setOutput('passed', failMessages.length === 0)
 }
 
 run()
