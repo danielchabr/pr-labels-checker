@@ -93,6 +93,7 @@ async function run () {
     core.info(JSON.stringify(check))
 
     core.info(failMessages.join('. '))
+    core.setFailed(failMessages.join('. '))
   } else {
     const check = await octokit.checks.create({
       ...params,
@@ -106,9 +107,9 @@ async function run () {
 
     core.info(JSON.stringify(check))
     core.info('passed: true')
-  }
 
-  // core.setOutput('passed', true)
+    core.setOutput('passed', true)
+  }
 }
 
 run()
