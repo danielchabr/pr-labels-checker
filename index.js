@@ -24,7 +24,12 @@ async function run() {
 
     const failMessages = []
 
-    const prLabels = context.payload.pull_request.labels.map(item => item.name)
+    const { data: labelsOnIssue } = await octokit.issues.listLabelsOnIssue({
+      ...context.repo,
+      issue_number: context.payload.pull_request.number
+    })
+
+    const prLabels = labelsOnIssue.map(item => item.name)
 
     const hasSomeResult = !hasSomeInput || hasSomeLabels.some((label) =>
       prLabels.includes(label)
