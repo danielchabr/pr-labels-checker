@@ -1,5 +1,6 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
+const { parseInputTags } = require('./utils')
 
 async function run() {
   try {
@@ -17,10 +18,10 @@ async function run() {
     const hasNoneInput = core.getInput('hasNone')
     const hasNotAllInput = core.getInput('hasNotAll')
 
-    const hasSomeLabels = hasSomeInput.split(',')
-    const hasAllLabels = hasAllInput.split(',')
-    const hasNoneLabels = hasNoneInput.split(',')
-    const hasNotAllLabels = hasNotAllInput.split(',')
+    const hasSomeLabels = parseInputTags(hasSomeInput)
+    const hasAllLabels = parseInputTags(hasAllInput)
+    const hasNoneLabels = parseInputTags(hasNoneInput)
+    const hasNotAllLabels = parseInputTags(hasNotAllInput)
 
     const failMessages = []
 
@@ -70,7 +71,7 @@ async function run() {
         ', '
       )}`)
     }
-  
+
     const checks = await octokit.checks.listForRef({
       ...context.repo,
       ref: context.payload.pull_request.head.ref,
