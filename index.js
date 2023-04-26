@@ -21,6 +21,8 @@ async function run() {
     const hasAllLabels = hasAllInput.split(',')
     const hasNoneLabels = hasNoneInput.split(',')
     const hasNotAllLabels = hasNotAllInput.split(',')
+    
+    const allowFailureInput = core.getInput('allowFailure')
 
     const failMessages = []
 
@@ -92,7 +94,11 @@ async function run() {
         })
       }
 
-      core.setFailed(failMessages.join('. '))
+      if (!allowFailureInput) {
+        core.setFailed(failMessages.join('. '))
+      } else {
+        core.setOutput('passed', false)
+      }
     } else {
       // update old checks
       for (const id of checkRunIds) {
