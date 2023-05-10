@@ -21,7 +21,7 @@ outputs:
     description: "Have the provided labels passed all tests?"
 runs:
   using: "node12"
-  main: "index.js"
+  main: "dist/index.cjs"
 branding:
   icon: "tag"
   color: "blue"

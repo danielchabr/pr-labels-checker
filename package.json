@@ -4,7 +4,8 @@
   "description": "Github Action to check if a PR's labels pass the specified rules",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "ncc build index.cjs --license LICENSE"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,8 @@
   "dependencies": {
     "@actions/core": "^1.9.1",
     "@actions/github": "^4.0.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.36.1"
   }
 }
