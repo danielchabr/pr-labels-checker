@@ -1,27 +1,27 @@
-name: 'PR labels checker'
-description: 'Checks PR labels for specified rules'
+name: "PR labels checker"
+description: "Checks PR labels for specified rules"
 inputs:
   hasSome:
-    description: 'Comma separated list of labels, PR needs at least of them'
+    description: "Comma separated list of labels, PR needs at least of them"
     required: false
   hasAll:
-    description: 'Comma separated list of labels, PR needs all of them'
+    description: "Comma separated list of labels, PR needs all of them"
     required: false
   hasNone:
-    description: 'Comma separated list of labels, PR must not have any of them'
+    description: "Comma separated list of labels, PR must not have any of them"
     required: false
   hasNotAll:
-    description: 'Comma separated list of labels, PR must not have all of them'
+    description: "Comma separated list of labels, PR must not have all of them"
     required: false
   githubToken:
-    description: 'The Github secret token to access PR check API'
+    description: "The Github secret token to access PR check API"
     required: true
 outputs:
   passed:
-    description: 'Have the provided labels passed all tests?'
+    description: "Have the provided labels passed all tests?"
 runs:
-  using: 'node12'
-  main: 'index.js'
+  using: "node12"
+  main: "index.js"
 branding:
-  icon: 'tag'
-  color: 'blue'
+  icon: "tag"
+  color: "blue"
