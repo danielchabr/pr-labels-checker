@@ -11,6 +11,15 @@ Github Action to check if a PR's labels pass the specified rules
 ## Output
 - `passed`: boolean
 
+## Permissions
+If you have customized permissions for your GitHub token you will need to manually add these permissions for this action:
+```
+    permissions:
+      pull-requests: read
+      checks: write
+```
+More info on the syntax: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions
+
 ## Example workflow file
 ```yml
 name: Labels Check

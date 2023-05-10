@@ -1,0 +1,19 @@
+name: Labels Check
+
+on:
+  pull_request:
+    types: [opened, labeled, unlabeled, synchronize]
+
+jobs:
+  QA-check:
+    steps:
+      - uses: danielchabr/pr-labels-checker@v3
+        with:
+          hasSome: QA:tested,QA:skipped
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+  Do_not_merge-check:
+    steps:
+      - uses: danielchabr/pr-labels-checker@v3
+        with:
+          hasNone: do not merge,blocked
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
