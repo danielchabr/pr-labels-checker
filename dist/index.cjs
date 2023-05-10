@@ -10339,21 +10339,11 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 1252:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ 3411:
+/***/ ((module) => {
 
-function parseInputTags (inputText) {
-  const removeNewLine = inputText.split('\n').join(',')
-  const splitByComma = removeNewLine.split(',');
+module.exports = eval("require")("./utils");
 
-  const trimmed =  splitByComma.map(tag => tag.trim())
-
-  const notEmpty = trimmed.filter(tag => tag !== "")
-
-  return notEmpty
-}
-
-exports.parseInputTags = parseInputTags
 
 /***/ }),
 
@@ -10536,7 +10526,7 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(2186)
 const github = __nccwpck_require__(5438)
-const { parseInputTags } = __nccwpck_require__(1252)
+const { parseInputTags } = __nccwpck_require__(3411)
 
 async function run() {
   try {
