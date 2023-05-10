@@ -6,12 +6,14 @@ on:
 
 jobs:
   QA-check:
+    runs-on: ubuntu-latest
     steps:
       - uses: danielchabr/pr-labels-checker@v3
         with:
           hasSome: QA:tested,QA:skipped
           githubToken: ${{ secrets.GITHUB_TOKEN }}
   Do_not_merge-check:
+    runs-on: ubuntu-latest
     steps:
       - uses: danielchabr/pr-labels-checker@v3
         with:
