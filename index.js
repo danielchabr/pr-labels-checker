@@ -97,9 +97,7 @@ async function run() {
 
       if (!allowFailure) {
         core.setFailed(failMessages.join('. '))
-      } else {
-        core.setOutput('passed', false)
-      }
+      } 
     } else {
       // update old checks
       for (const id of checkRunIds) {
