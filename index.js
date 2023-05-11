@@ -86,7 +86,7 @@ async function run() {
         await octokit.checks.update({
           ...context.repo,
           check_run_id: id,
-          conclusion: 'failure',
+          conclusion: allowFailureInput ? 'success' : 'failure',
           output: {
             title: 'Labels did not pass provided rules',
             summary: failMessages.join('. ')
