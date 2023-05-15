@@ -16,6 +16,11 @@ inputs:
   githubToken:
     description: "The Github secret token to access PR check API"
     required: true
+  allowFailure:
+    description: 'When true, the action returns a successful exit code even if the label criteria are not met'
+    type: boolean
+    required: false
+    default: false
 outputs:
   passed:
     description: "Have the provided labels passed all tests?"

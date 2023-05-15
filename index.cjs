@@ -23,6 +23,9 @@ async function run() {
     const hasNoneLabels = parseInputTags(hasNoneInput);
     const hasNotAllLabels = parseInputTags(hasNotAllInput);
 
+    const allowFailureInput = core.getInput("allowFailure");
+    const allowFailure = allowFailureInput === "true";
+
     const failMessages = [];
 
     const { data: labelsOnIssue } = await octokit.issues.listLabelsOnIssue({
@@ -93,7 +96,7 @@ async function run() {
         await octokit.checks.update({
           ...context.repo,
           check_run_id: id,
-          conclusion: "failure",
+          conclusion: allowFailure ? "success" : "failure",
           output: {
             title: "Labels did not pass provided rules",
             summary: failMessages.join(". "),
@@ -101,7 +104,9 @@ async function run() {
         });
       }
 
-      core.setFailed(failMessages.join(". "));
+      if (!allowFailure) {
+        core.setFailed(failMessages.join(". "));
+      }
     } else {
       // update old checks
       for (const id of checkRunIds) {

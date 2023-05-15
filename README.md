@@ -7,6 +7,7 @@ Github Action to check if a PR's labels pass the specified rules
 - `hasNone`: Comma separated list of labels, PR must not have any of them
 - `hasNotAll`: Comma separated list of labels, PR must not have all of them
 - `githubToken`: GitHub token
+- `allowFailure`: When true, the action returns a successful exit code even if the label criteria are not met
 
 ## Output
 - `passed`: boolean
