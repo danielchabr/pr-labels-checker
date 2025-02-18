@@ -25,7 +25,7 @@
   "homepage": "https://github.com/danielchabr/pr-has-one-of-labels#readme",
   "dependencies": {
     "@actions/core": "^1.9.1",
-    "@actions/github": "^4.0.0"
+    "@actions/github": "^6.0.0"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.36.1"
